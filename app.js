@@ -1,23 +1,51 @@
-const express =require('express');
-const router =require('./src/routes/api');
-const app= new express();
+import cors from "cors";
+import express from "express";
+import rateLimit from "express-rate-limit";
+import helmet from "helmet";
+import mongoose from "mongoose";
+import path from "path";
+import { fileURLToPath } from 'url';
 
-const rateLimit =require('express-rate-limit');
-const helmet =require('helmet');
-const mongoSanitize =require('express-mongo-sanitize');
+// Define __filename and __dirname
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+import {
+  DATABASE,
+  MAX_JSON_SIZE,
+  PORT,
+  REQUEST_NUMBER,
+  REQUEST_TIME,
+  URL_ENCODE,
+  WEB_CACHE,
+} from "./app/config/config.js";
+import router from "./routes/api.js";
 
-const xss =require('xss-clean');
-const hpp =require('hpp');
-const cors =require('cors');
-const cookieParser = require('cookie-parser');
-const mongoose =require('mongoose');
-const path = require("path");
+const app = express();
 
+// App Use Default Middleware
+app.use(cors());
+app.use(express.json({ limit: MAX_JSON_SIZE }));
+app.use(express.urlencoded({ extended: URL_ENCODE }));
+app.use(helmet());
 
+// App Use Limiter
+const limiter = rateLimit({ windowMs: REQUEST_TIME, max: REQUEST_NUMBER });
+app.use(limiter);
 
+// Cache
+app.set("etag", WEB_CACHE);
 
+// Database Connect
+// const uri = 'mongodb://127.0.0.1:27017/ecomostad';
 
-
+// // Connect to MongoDB
+// mongoose.connect(uri, {
+//   autoIndex: true
+// }).then(() => {
+//   console.log('MongoDB connected successfully');
+// }).catch((error) => {
+//   console.error('Error connecting to MongoDB:', error);
+// });
 let URI="mongodb+srv://<username>:<password>@cluster0.i5nrrf0.mongodb.net/ecom?retryWrites=true&w=majority";
 let option={user:'Rup774827',pass:'Rup774827',autoIndex:true}
 //let URL="mongodb://localhost:27017/ecom4"
@@ -28,30 +56,18 @@ mongoose.connect(URI,option).then((res)=>{
     console.log(err)
 })
 
+app.get("/", (req, res) => {
+  res.send("Task Manager API");
+});
 
-app.use(cookieParser());
-app.use(cors())
-app.use(helmet())
-app.use(mongoSanitize())
-app.use(xss())
-app.use(hpp())
-
-app.use(express.json({limit: '50mb'}));
-app.use(express.urlencoded({limit: '50mb'}));
-
-
-const limiter= rateLimit({windowMs:15*60*1000,max:3000})
-app.use(limiter)
-
-app.set('etag', false);
-app.use("/api/v1",router)
-
+app.use("/api", router);
 app.use(express.static('client/dist'));
-
 
 // Add React Front End Routing
 app.get('*',function (req,res) {
     res.sendFile(path.resolve(__dirname,'client','dist','index.html'))
 })
 
-module.exports=app;
+app.listen(PORT, () => {
+  console.log("Server started on my port " + PORT);
+});
