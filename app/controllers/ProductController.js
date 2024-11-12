@@ -20,9 +20,34 @@ export const ProductListByBrand=async (req,res)=>{
 export const ProductListBySlider=async (req,res)=>{
     try {
         let data = await ProductSliderModel.find({});
-        return { status: "success", data: data };
+        
+        // Use res.json() or res.send() to send the response
+        res.status(200).json({ status: "success", data: data });
       } catch (error) {
-        return { status: "fail", data: error.toString() };
+        res.status(500).json({ status: "fail", data: error.toString() });
+      }
+}
+export const sliderpost=async (req,res)=>{
+    try {
+        // Destructure data from the request body
+        const { title, des, price,image } = req.body; // Adjust fields based on your schema
+    
+        // Create a new product slider entry
+        const newSlider = new ProductSliderModel({
+          title, // Assuming you have this field in your model
+          des, // Assuming you have this field for the image URL or path
+          price,
+          image // Assuming you have a description field
+        });
+    
+        // Save the new slider to the database
+        const savedSlider = await newSlider.save();
+    
+        // Return success response with saved data
+        return res.status(201).json({ status: "success", data: savedSlider });
+      } catch (error) {
+        // Return failure response with error message
+        return res.status(500).json({ status: "fail", data: error.toString() });
       }
 }
 

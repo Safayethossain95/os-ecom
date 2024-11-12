@@ -8,7 +8,7 @@ const DataSchema = new mongoose.Schema(
         price:{type:String,required:true},
         image:{type:String,required:true},
 
-        productID:{type:mongoose.Schema.Types.ObjectId,required:true},
+        productID:{type:mongoose.Schema.Types.ObjectId,required:false},
 
     },
     {timestamps:true,versionKey:false}

@@ -4,7 +4,6 @@ import BrandsSkeleton from "./../../skeleton/Brands-Skeleton";
 
 const Brands = () => {
   const { BrandList } = productStore();
- 
   if (BrandList === null) {
     return <BrandsSkeleton />;
   } else {

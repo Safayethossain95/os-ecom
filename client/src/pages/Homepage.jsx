@@ -6,7 +6,7 @@ import CategoriesSkeleton from "../skeleton/Categories-Skeleton.jsx";
 import ProductsSkeleton from "../skeleton/Products-Skeleton.jsx";
 import { productStore } from "../store/ProductStore.js";
 import Features from '../components/product/Features.jsx';
-import useFeatureStore from "../store/FeatureStore.js";
+import {useFeatureStore} from "../store/FeatureStore.js";
 import Slider from './../components/product/Slider';
 
 
@@ -17,9 +17,9 @@ const Homepage = () => {
     const {FeatureListRequest} = useFeatureStore()
     useEffect(() => {
         (async () => {
+            await FeatureListRequest()
             await BrandListRequest();
             await SliderListRequest();
-            await FeatureListRequest()
         })()
     }, []);
 

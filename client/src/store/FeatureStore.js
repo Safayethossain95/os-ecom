@@ -1,7 +1,7 @@
 import {create} from 'zustand';
 import axios  from "axios";
 
-const useFeatureStore = create((set)=>({
+export const useFeatureStore = create((set)=>({
     FeatureList:null,
     FeatureListRequest:async()=>{
         try{
@@ -26,4 +26,3 @@ const useFeatureStore = create((set)=>({
     },
 }))
 
-export default useFeatureStore

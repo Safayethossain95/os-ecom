@@ -36,7 +36,7 @@ app.use(limiter);
 app.set("etag", WEB_CACHE);
 
 // Database Connect
-// const uri = 'mongodb://127.0.0.1:27017/ecomostad';
+const URI = 'mongodb://127.0.0.1:27017/osecom';
 
 // // Connect to MongoDB
 // mongoose.connect(uri, {
@@ -46,18 +46,17 @@ app.set("etag", WEB_CACHE);
 // }).catch((error) => {
 //   console.error('Error connecting to MongoDB:', error);
 // });
-let URI="mongodb+srv://<username>:<password>@cluster0.i5nrrf0.mongodb.net/ecom?retryWrites=true&w=majority";
-let option={user:'Rup774827',pass:'Rup774827',autoIndex:true}
+
 //let URL="mongodb://localhost:27017/ecom4"
 //let option={user:'',pass:"",autoIndex:true};
-mongoose.connect(URI,option).then((res)=>{
+mongoose.connect(URI).then((res)=>{
     console.log("Database Connected")
 }).catch((err)=>{
     console.log(err)
 })
 
 app.get("/", (req, res) => {
-  res.send("Task Manager API");
+  res.send("E-commerce API");
 });
 
 app.use("/api", router);

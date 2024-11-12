@@ -1,7 +1,7 @@
 import FeaturesModel from "../model/FeaturesModel.js";
 import LegalModel from "../model/LegalModel.js";
 
-export const FeaturesListService = async () => {
+export const FeaturesListService = async (req) => {
     try {
         let data= await FeaturesModel.find({});
         return {status:"success",data:data}

@@ -16,13 +16,14 @@ export const productStore = create((set)=>({
     SliderList:null,
     SliderListRequest: async()=>{
         try{
-            const res = await axios.get('/api/ProductSliderList')
+            const res = await axios.get('/api/ProductListBySlider')
+            console.log("ami slidrer",res.data.data)
             if(res.data.status=="success"){
                 set({SliderList:res.data['data']})
             }
         }catch(e){
             console.error(e)
         }
-    }
+    },
 
 }))
