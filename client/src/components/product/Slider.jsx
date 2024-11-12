@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import { productStore } from "../../store/ProductStore";
 import SliderSkeleton from "../../skeleton/Slider-Skeleton";
 
-/* eslint-disable react/no-unknown-property */
 const Slider = () => {
   const { SliderList } = productStore();
   console.log("slider", SliderList)
