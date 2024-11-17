@@ -21,9 +21,9 @@ const Brands = () => {
                 BrandList.map((item,i)=>{
                     return(
                         <div key={i} className="col-6 col-lg-8r text-center col-md-8r p-2">
-                        <Link to={`/by-brand/${item['_id']}`} className="card h-100 rounded-3 bg-light">
+                        <Link to={`/by-brand/${item['_id']}`} className="card h-100 rounded-3 bg-white">
                           <div className="card-body">
-                            <img className="w-75" src={item['brandImg']} />
+                            <img className="w-75" src="https://i.ibb.co.com/JpjBsc4/cat.png" />
                             <p className="bodySmal mt-3">{item['brandName']} </p>
                           </div>
                         </Link>
