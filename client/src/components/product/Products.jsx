@@ -7,7 +7,7 @@ import { productStore } from "../../store/ProductStore";
 const Products = () => {
   const { ListByRemark, ListByRemarkRequest } = productStore();
  
-
+  console.log(ListByRemark)
   return (
     <div>
       <div className="section">
@@ -148,7 +148,7 @@ const Products = () => {
                                 className="col-md-3 p-2 col-lg-3 col-sm-6 col-12"
                               >
                                 <Link
-                                  to=""
+                                   to={`/details/${item["_id"]}`}
                                   className="card shadow-sm h-100 rounded-3 bg-white"
                                 >
                                   <img className="w-100 rounded-top-2" src="https://i.ibb.co.com/4S3sXWq/mac-product.png" />

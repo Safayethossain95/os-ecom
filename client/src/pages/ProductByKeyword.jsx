@@ -13,7 +13,7 @@ const ProductByKeyword = () => {
         (async ()=>{
             await ListByKeywordRequest(keyword)
         })()
-    }, [id]);
+    }, [keyword]);
 
 
     return (

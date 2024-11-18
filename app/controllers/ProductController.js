@@ -1,6 +1,8 @@
 import BrandModel from "../model/brandsModel.js"
+import CategoryModel from "../model/categoriesModel.js"
 import ProductModel from "../model/productsModel.js"
 import ProductSliderModel from "../model/slidersModel.js"
+import { ListByFilterService } from "../service/ListByFilterService.js"
 import { ListByBrandService, DetailsService, ListByRemarkService, ListByCategoryService, ProductReviewListService, ListByKeywordService } from "../service/ProductServices.js"
 
 export const ProductListByCategory = async (req,res) => {
@@ -26,6 +28,10 @@ export const ProductListBySlider=async (req,res)=>{
       } catch (error) {
         res.status(500).json({ status: "fail", data: error.toString() });
       }
+}
+export const ProductListByFilter=async (req,res)=>{
+    let result = await ListByFilterService(req)
+    return res.json(result)
 }
 export const sliderpost=async (req,res)=>{
     try {
@@ -88,6 +94,15 @@ export const GetProducts=async (req,res)=>{
 export const GetProductBrandList=async (req,res)=>{
     try {
         const products = await BrandModel.find({})
+        return res.json({status:"success",data:products});
+    }
+    catch (e) {
+        return res.json({status:"fail","Message":e.toString()})
+    }
+}
+export const GetCategories=async (req,res)=>{
+    try {
+        const products = await CategoryModel.find({})
         return res.json({status:"success",data:products});
     }
     catch (e) {

@@ -3,6 +3,11 @@ import axios from 'axios'
 
 export const productStore = create((set)=>({
 
+    SearchKeyword:"",
+    SearchKeywordSet:async (keyword)=>{
+        set({SearchKeyword:keyword})
+    },
+
   
     ListProduct:null,
     ListByBrandRequest:async(BrandID)=>{
@@ -29,6 +34,8 @@ export const productStore = create((set)=>({
     ListByFilterRequest:async(postBody)=>{
         set({ListProduct:null})
         let res=await axios.post(`/api/ProductListByFilter`,postBody);
+        
+        console.log(res.data);
         if(res.data['status']==="success"){
             set({ListProduct:res.data['data']})
         }
@@ -76,5 +83,22 @@ export const productStore = create((set)=>({
             set({CategoryList:res.data['data']})
         }
     },
+
+    Details:null,
+    DetailsRequest:async(id)=>{
+        set({Details:null})
+        let res=await axios.get(`/api/ProductDetailsID/${id}`);
+        if(res.data['status']==="success"){
+            set({Details:res.data['data']})
+        }
+    },
+    ReviewList:null,
+    ReviewListRequest:async(id)=>{
+     
+        let res=await axios.get(`/api/ProductReviewList/${id}`);
+        if(res.data['status']==="success"){
+            set({ReviewList:res.data['data']})
+        }
+    }
 
 }))

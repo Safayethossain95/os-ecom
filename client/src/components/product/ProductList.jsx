@@ -1,21 +1,32 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import ProductsSkeleton from "../../skeleton/Products-Skeleton";
 import { productStore } from "../../store/ProductStore";
 import { Link } from "react-router-dom";
 import StarRatings from "react-star-ratings";
 
-const ProductList = () => {
+const ProductList = ({id}) => {
+  const {BrandList,CategoryList,ListProduct,BrandListRequest,CategoryListRequest,ListByFilterRequest} = productStore()
   let [Filter,SetFilter]=useState({brandID:"", categoryID:"", priceMax:"", priceMin:""})
+ 
   useEffect(() => {
+    
     (async ()=>{
         BrandList===null?await BrandListRequest():null;
         CategoryList===null?await CategoryListRequest():null;
 
         let isEveryFilterPropertyEmpty=Object.values(Filter).every(value => value==="");
-        !isEveryFilterPropertyEmpty?await ListByFilterRequest(Filter):null
-
+        // console.log(isEveryFilterPropertyEmpty)
+        if (!isEveryFilterPropertyEmpty) {
+          console.log(Filter)
+          await ListByFilterRequest(Filter); // No need to reset ListProduct to null here.
+       
+      }
     })()
 }, [Filter]);
+
 
     const inputOnChange=async (name,value)=>{
         SetFilter((data)=>({
@@ -23,7 +34,7 @@ const ProductList = () => {
             [name]:value
         }))
     }
-  const {BrandList,CategoryList,ListProduct,BrandListRequest,CategoryListRequest,ListByFilterRequest} = productStore()
+ 
   return (
     <div className="container mt-2">
       <div className="row">
@@ -106,7 +117,7 @@ const ProductList = () => {
               ) : (
                 <div className="container">
                   <div className="row">
-                    {ListProduct.map((item, i) => {
+                    {ListProduct?.map((item, i) => {
                       let price = (
                         <p className="bodyMedium  text-dark my-1">
                           Price: ${item["price"]}{" "}

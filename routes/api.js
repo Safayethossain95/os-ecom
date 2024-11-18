@@ -66,6 +66,7 @@ router.get("/ProductListByRemark/:Remark",ProductController.ProductListByRemark)
 router.get("/ProductListByBrand/:BrandID",ProductController.ProductListByBrand)
 router.get("/ProductDetailsID/:ProductID",ProductController.ProductDetailsID)
 router.get("/ProductListByKeyword/:Keyword",ProductController.ProductListByKeyword)
+router.post("/ProductListByFilter",ProductController.ProductListByFilter)
 router.get("/ProductReviewList/:ProductID",ProductController.ProductReviewListByID)
 
 // Brands
@@ -81,6 +82,10 @@ router.post("/upload", uploadMiddleware ,fileUploadController)
 
 // Features
 router.get('/FeaturesList',FeaturesController.FeaturesList)
+
+//categories
+
+router.get("/GetCategories", ProductController.GetCategories)
 
 
 

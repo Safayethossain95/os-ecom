@@ -25,4 +25,4 @@ const DataSchema = new mongoose.Schema(
 
 
 const ProductDetailsModel =mongoose.model('productdetails',DataSchema);
-module.exports=ProductDetailsModel;
+export default ProductDetailsModel;
