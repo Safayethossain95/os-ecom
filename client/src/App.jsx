@@ -4,6 +4,7 @@ import ProductByCategory from "./pages/ProductByCategory.jsx";
 import ProductByBrandPage from "./pages/ProductByBrand.jsx";
 import ProductByKeyword from "./pages/ProductByKeyword.jsx";
 import ProductDetailspage from "./pages/ProductDetailspage.jsx";
+import AboutPage from "./pages/AboutPage.jsx";
 
 
 
@@ -18,6 +19,7 @@ function App() {
              <Route path="/by-brand/:id" element={<ProductByBrandPage/>} />
              <Route path="/by-keyword/:keyword" element={<ProductByKeyword/>} />
              <Route path="/details/:id" element={<ProductDetailspage/>} />
+             <Route path="/about" element={<AboutPage/>} />
          </Routes>
      </BrowserRouter>
     </>

@@ -87,6 +87,10 @@ router.get('/FeaturesList',FeaturesController.FeaturesList)
 
 router.get("/GetCategories", ProductController.GetCategories)
 
+// legal details
+
+router.get("/LegalDetails/:type", FeaturesController.LegalDetails)
+
 
 
 export default router;

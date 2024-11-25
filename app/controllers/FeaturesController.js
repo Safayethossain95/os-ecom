@@ -7,6 +7,7 @@ export const FeaturesList=async(req,res)=>{
 
 
 export const LegalDetails=async(req,res)=>{
+    console.log("dhukse")
     let result=await LegalDetailsService(req);
     return res.json(result)
 }
