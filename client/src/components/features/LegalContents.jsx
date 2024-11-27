@@ -4,7 +4,7 @@ import parse from 'html-react-parser';
 
 const LegalContents = () => {
     const {LegalDetails} = useFeatureStore()
-
+    const description = LegalDetails?.[0]?.description || "Description not available";
     if(LegalDetails===null){
         return <LegalContentSkeleton/>
     }
@@ -15,7 +15,7 @@ const LegalContents = () => {
                 <div className="col-md-12">
                   <div className="card p-4">
                     {
-                        parse(LegalDetails[0]['description'])
+                        parse(description)
                     }
                   </div>
                 </div>

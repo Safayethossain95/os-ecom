@@ -4,18 +4,18 @@ import Layout from "../components/layout/Layout.jsx";
 import LegalContents from "../components/features/LegalContents.jsx";
 
 
-const TermsPage = () => {
+const HowToBuyPage = () => {
   const {LegalDetailsRequest}=useFeatureStore();
   useEffect(() => {
     (async ()=>{
-      await LegalDetailsRequest("terms")
+      await LegalDetailsRequest("howtobuy")
     })()
   }, []);
   return (
       <Layout>
-        <LegalContents/>
+      <LegalContents/>
       </Layout>
   );
 }
 
-export default TermsPage
+export default HowToBuyPage

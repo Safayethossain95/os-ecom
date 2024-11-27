@@ -114,9 +114,9 @@ const AppNavBar = () => {
             <Link
               type="button"
               className="btn ms-3 btn-success d-flex"
-              to="/profile"
+              to="/login"
             >
-              Logout
+              Login
             </Link>
           </div>
         </div>
