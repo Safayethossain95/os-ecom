@@ -5,6 +5,7 @@ import Details from "../components/product/Details"
 
 const ProductDetailspage = () => {
   const {id} = useParams()
+  console.log("productdetilsid",id)
   return (
     <>
     <Layout>

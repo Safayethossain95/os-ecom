@@ -32,7 +32,7 @@ export const ListByCategoryService = async (req) => {
       { $unwind: "$brand" },
       {
         $project: {
-          _id: 0,
+       
           "brand._id": 0,
           "category._id": 0,
           categoryID: 0,
@@ -75,7 +75,7 @@ export const ListByBrandService = async (req) => {
       { $unwind: "$brand" },
       {
         $project: {
-          _id: 0,
+   
           "brand._id": 0,
           "category._id": 0,
           categoryID: 0,
@@ -118,64 +118,87 @@ export const ListByRemarkService = async (req)=>{
         return {status:"fail",message:err.toString()}
     }
 }
-export const DetailsService = async (req) => {
-    try {
-      let ProductID = new ObjectId(req.params.ProductID);
-      let MatchStage = { $match: { _id: ProductID } };
-      let JoinWithBrandStage = {
-        $lookup: {
-          from: "brands",
-          localField: "brandID",
-          foreignField: "_id",
-          as: "brand",
-        },
-      };
-      let JoinWithCategoryStage = {
-        $lookup: {
-          from: "categories",
-          localField: "categoryID",
-          foreignField: "_id",
-          as: "category",
-        },
-      };
-      let JoinWithDetailsStage = {
-        $lookup: {
-          from: "productdetails",
-          localField: "_id",
-          foreignField: "productID",
-          as: "details",
-        },
-      };
-  
-      let UnwindBrandStage = { $unwind: "$brand" };
-      let UnwindCategoryStage = { $unwind: "$category" };
-      let UnwindDetailsStage = { $unwind: "$details" };
-  
-      let ProjectionStage = {
-        $project: {
-          "brand._id": 0,
-          "category._id": 0,
-          categoryID: 0,
-          brandID: 0,
-        },
-      };
-  
-      let data = await ProductModel.aggregate([
-        MatchStage,
-        JoinWithBrandStage,
-        JoinWithCategoryStage,
-        JoinWithDetailsStage,
-        UnwindBrandStage,
-        UnwindCategoryStage,
-        UnwindDetailsStage,
-        ProjectionStage,
-      ]);
-  
-      return { status: "success", data: data };
-    } catch (error) {
-      return { status: "fail", data: error.toString() };
+export const DetailsService =  async (req, res) => {
+  try {
+    // Extract and log ProductID
+    let { ProductID } = req.params;
+    console.log("Received ProductID:", ProductID); // Verify it logs correctly
+    
+    // Validate ObjectId
+    if (!mongoose.Types.ObjectId.isValid(ProductID)) {
+      return { status: 'fail', message: 'Invalid Product ID' }
     }
-  };
+    
+    // Convert to ObjectId
+    let objectIdConvertedProductID = new mongoose.Types.ObjectId(ProductID);
+
+    // Define Aggregation Stages
+    let MatchStage = { $match: { _id: objectIdConvertedProductID } };
+    
+    let JoinWithBrandStage = {
+      $lookup: {
+        from: "brands",
+        localField: "brandID",
+        foreignField: "_id",
+        as: "brand",
+      },
+    };
+    
+    let JoinWithCategoryStage = {
+      $lookup: {
+        from: "categories",
+        localField: "categoryID",
+        foreignField: "_id",
+        as: "category",
+      },
+    };
+    
+    let JoinWithDetailsStage = {
+      $lookup: {
+        from: "productdetails",
+        localField: "_id",
+        foreignField: "productID",
+        as: "details",
+      },
+    };
+
+    let UnwindBrandStage = { $unwind: "$brand" };
+    let UnwindCategoryStage = { $unwind: "$category" };
+    let UnwindDetailsStage = { $unwind: "$details" };
+
+    let ProjectionStage = {
+      $project: {
+        categoryID: 0,
+        brandID: 0,
+      },
+    };
+
+    // Perform Aggregation
+    let data = await ProductModel.aggregate([
+      MatchStage,
+      JoinWithBrandStage,
+      JoinWithCategoryStage,
+      JoinWithDetailsStage,
+      UnwindBrandStage,
+      UnwindCategoryStage,
+      UnwindDetailsStage,
+      ProjectionStage,
+    ]);
+
+    // Check if data was found
+    if (!data || data.length === 0) {
+      return { status: "fail", message: "Product not found" }
+    }
+
+    // Send Response
+    return { status: "success", data: data }
+    
+  } catch (error) {
+    // Enhanced Error Logging
+    console.error("Error fetching product details:", error);
+    return { status: "fail", message: error.message }
+  }
+};
 export const ProductReviewListService = async (req) => {
     try {
       let ProductID = new ObjectId(req.params.ProductID);
@@ -240,7 +263,7 @@ export const ProductReviewListService = async (req) => {
         { $unwind: "$brand" },
         {
           $project: {
-            _id: 0,
+           
             "brand._id": 0,
             "category._id": 0,
             categoryID: 0,

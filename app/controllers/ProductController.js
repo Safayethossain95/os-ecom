@@ -59,6 +59,7 @@ export const sliderpost=async (req,res)=>{
 
 export const ProductDetailsID=async (req,res)=>{
     let result = await DetailsService(req)
+    // const { ProductID } = req.params;
     return res.json(result)
 }
 

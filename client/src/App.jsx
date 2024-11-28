@@ -12,6 +12,7 @@ import HowToBuyPage from "./pages/HowToBuyPage.jsx";
 import ComplainPage from "./pages/ComplainPage.jsx";
 import ContactPage from "./pages/ContactPage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
+import OtpPage from "./pages/OtpPage.jsx";
 
 
 
@@ -35,6 +36,7 @@ function App() {
              <Route path="/contact" element={<ContactPage/>} />
 
              <Route path="/login" element={<LoginPage/>} />
+             <Route path="/otp" element={<OtpPage/>} />
          </Routes>
      </BrowserRouter>
     </>

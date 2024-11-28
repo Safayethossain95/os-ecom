@@ -1,4 +1,4 @@
-import UsersModel from "../model/UsersModel.js";
+import Users from "../model/UsersModel.js";
 import { CodeVerifyService, ProfileService, ReadProfileService, RegisterUserService, ResetPasswordService, UserOTPService } from "../service/UserService.js";
 import SendEmail from "../utility/emailUtility.js";
 import { TokenDecode, TokenEncode } from "../utility/tokenUtility.js";
@@ -18,7 +18,7 @@ export const Login=async(req,res)=>{
     
     try{
         let reqBody = req.body;
-        let data = await UsersModel.findOne({email:reqBody.email,password:reqBody.password})
+        let data = await Users.findOne({email:reqBody.email,password:reqBody.password})
 
         if(data==null){
             return res.json({status:"fail",message:"User not found"})

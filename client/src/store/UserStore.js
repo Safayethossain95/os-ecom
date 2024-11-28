@@ -4,13 +4,21 @@ import {getEmail, setEmail} from "../utility/utility.js";
 
 export const UserStore = create((set)=>({
 
-    LoginFormValue:{email:"ABC"},
+    LoginFormData:{email:""},
+    LoginFormOnChange:(name,value)=>{
+        set((state)=>({
+            LoginFormData:{
+                ...state.loginFormData,
+                [name]:value
+            }
+        }))
+    },
     isFormSubmit:false,
     UserOTPRequest:async(email)=>{
         try{
 
             set({isFormSubmit:true})
-            let res=await axios.get(`/api/UserOTP/${email}`, );
+            let res=await axios.get(`/api/recover-verify-email/${email}`, );
             setEmail(email)
             set({isFormSubmit:false})
             return res.data['status']==="success"

@@ -5,32 +5,20 @@ import SendEmail from './../utility/emailUtility.js';
 
 export const UserOTPService = async (req) => {
   try {
-    let email = req.params.email;
-    let code = Math.floor(100000 + Math.random() * 900000);
+    let email=req.params.email;
+    let code=Math.floor(100000+Math.random()*900000);
 
-    let EmailText = `Your Verification Code is= ${code}`;
-    let EmailSubject = "Email Verification";
+    let EmailText=`Your Verification Code is= ${code}`
+    let EmailSubject='Email Verification'
 
-    
+    await SendEmail(email,EmailText,EmailSubject);
 
-    let userCount = await Users.aggregate([
-      { $match: { email: email } },
-      { $count: "total" },
-    ]);
-    console.log(userCount);
+    await Users.updateOne({email:email},{$set:{otp:code}},{upsert:true})
 
-    if (userCount[0].total === 1) {
-      await OTPModel.updateOne({ email: email }, { otp: code, status: 0 },{upsert: true,new: true});
-
-      let sendEmail = await SendEmail(email, EmailText, EmailSubject);
-      return { status: true, data: sendEmail };
-    }else{
-        return { status: false, data: "No User Found" };
-    }
-
-  } catch (e) {
-    return { status: "fail", message: e.toString() };
-  }
+    return {status:"success", message:"6 Digit OTP has been send"}
+}catch (e) {
+    return {status:"fail", message:e.toString()}
+}
 };
 
 export const RegisterUserService = async (req) => {

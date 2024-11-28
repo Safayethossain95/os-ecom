@@ -10,7 +10,6 @@ import Reviews from './Reviews';
 const Details = ({id}) => {
     const {Details,DetailsRequest,ReviewListRequest} = productStore()
     const [quantity,setQuantity] = useState(1)
-
     const incrementqty = ()=>{
         setQuantity(q=>q+1)
     }
@@ -24,6 +23,7 @@ const Details = ({id}) => {
     useEffect(()=>{
         DetailsRequest(id)
         ReviewListRequest(id)
+        console.log(Details)
     },[id])
 
     if(Details===null){

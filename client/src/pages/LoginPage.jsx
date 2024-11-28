@@ -1,11 +1,12 @@
 
+import Layout from "../components/layout/Layout.jsx";
 import LoginForm from "../components/user/LoginForm.jsx";
 
 const LoginPage = () => {
     return (
-        <div>
+        <Layout>
             <LoginForm/>
-        </div>
+        </Layout>
     );
 };
 

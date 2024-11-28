@@ -1,5 +1,4 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/prop-types */
+
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import ProductsSkeleton from "../../skeleton/Products-Skeleton";
@@ -7,7 +6,7 @@ import { productStore } from "../../store/ProductStore";
 import { Link } from "react-router-dom";
 import StarRatings from "react-star-ratings";
 
-const ProductList = ({id}) => {
+const ProductList = () => {
   const {BrandList,CategoryList,ListProduct,BrandListRequest,CategoryListRequest,ListByFilterRequest} = productStore()
   let [Filter,SetFilter]=useState({brandID:"", categoryID:"", priceMax:"", priceMin:""})
  
@@ -25,6 +24,7 @@ const ProductList = ({id}) => {
        
       }
     })()
+    console.log(ListProduct)
 }, [Filter]);
 
 

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from "react";
 import { productStore } from "../store/ProductStore";
 import Layout from "../components/layout/Layout";
