@@ -7,7 +7,7 @@ import { productStore } from "../../store/ProductStore";
 const Products = () => {
   const { ListByRemark, ListByRemarkRequest } = productStore();
  
-  console.log(ListByRemark)
+  
   return (
     <div>
       <div className="section">

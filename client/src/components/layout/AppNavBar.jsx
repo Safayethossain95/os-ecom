@@ -1,9 +1,29 @@
 import { Link } from "react-router-dom";
 import logo from "../../assets/images/plainb-logo.svg";
 import { productStore } from "../../store/ProductStore";
+import { UserStore } from "../../store/UserStore";
+// import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import UserSubmitButton from './../user/UserSubmitButton';
 const AppNavBar = () => {
-    const {SearchKeyword,SearchKeywordSet} = productStore()
-   
+  const { SearchKeyword, SearchKeywordSet } = productStore();
+  
+  const navigate = useNavigate()
+  const {isLogin,UserLogoutRequest} = UserStore();
+
+  
+
+
+  const handlelogout=async()=>{
+    sessionStorage.clear();
+    localStorage.clear();
+    const res=await UserLogoutRequest()
+    console.log(res)
+    // window.location.href="/"
+    navigate("/")
+    toast.success("Logged out successfully")
+  }
   return (
     <>
       <div className="container-fluid text-white p-2 bg-success">
@@ -68,9 +88,18 @@ const AppNavBar = () => {
                 placeholder="Search"
                 aria-label="Search"
                 value={SearchKeyword}
-                onChange={(e)=>{e.preventDefault();SearchKeywordSet(e.target.value)}}
+                onChange={(e) => {
+                  e.preventDefault();
+                  SearchKeywordSet(e.target.value);
+                }}
               />
-              <Link to={SearchKeyword!==null?`/by-keyword/${SearchKeyword}`:`/`} className="btn btn-outline-dark" type="submit">
+              <Link
+                to={
+                  SearchKeyword !== null ? `/by-keyword/${SearchKeyword}` : `/`
+                }
+                className="btn btn-outline-dark"
+                type="submit"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -104,20 +133,24 @@ const AppNavBar = () => {
             >
               <i className="bi text-dark bi-heart"></i>
             </Link>
-            <Link
-              type="button"
-              className="btn ms-3 btn-success d-flex"
-              to="/profile"
-            >
-              Profile
-            </Link>
-            <Link
-              type="button"
-              className="btn ms-3 btn-success d-flex"
-              to="/login"
-            >
-              Login
-            </Link>
+          
+            {isLogin? (
+              <UserSubmitButton
+                type="button"
+                className="btn ms-3 btn-success d-flex"
+                text="Logout"
+                onClick={handlelogout}
+              />
+               
+            ) : (
+              <Link
+                type="button"
+                className="btn ms-3 btn-success d-flex"
+                to="/login"
+              >
+                Login
+              </Link>
+            )}
           </div>
         </div>
       </nav>

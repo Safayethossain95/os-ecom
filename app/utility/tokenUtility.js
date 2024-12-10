@@ -9,7 +9,7 @@ export const TokenEncode = (email, user_id) => {
     { expiresIn: JWT_EXPIRE_TIME } // The token will expire in 5 minutes
   );
   // Setting the cookie
-  
+ 
 
   return token;
 };

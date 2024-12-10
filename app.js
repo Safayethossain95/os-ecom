@@ -5,7 +5,7 @@ import helmet from "helmet";
 import mongoose from "mongoose";
 import path from "path";
 import { fileURLToPath } from 'url';
-
+import cookieParser from 'cookie-parser';
 // Define __filename and __dirname
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -23,7 +23,11 @@ import router from "./routes/api.js";
 const app = express();
 
 // App Use Default Middleware
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:5173', // Adjust to your frontend URL
+  credentials: true                // Allow cookies to be sent
+}));
+app.use(cookieParser());
 app.use(express.json({ limit: MAX_JSON_SIZE }));
 app.use(express.urlencoded({ extended: URL_ENCODE }));
 app.use(helmet());

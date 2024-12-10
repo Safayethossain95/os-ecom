@@ -44,19 +44,24 @@ export const Logout=async(req,res)=>{
 
     
     try {
-        // Clear the 'token' cookie (make sure to set the same path as when it was created)
-        res.clearCookie('token', { path: '/' });
+        let cookieOption = {
+            expires: new Date(0), // Set expiration to a past date
+            httpOnly: true,      // Ensure this matches the original setting
+            secure: false,        // Ensure this matches the original setting
+            sameSite: 'None',     // Ensure this matches the original setting
+            path: '/'             // Ensure this matches the original setting
+          };
+          console.log('Before removal:', req.cookies.token);
+          res.cookie('token', '', cookieOption);
+          console.log('After removal:', req.cookies.token);
         
-        // Optionally modify req.headers.token for internal usage, but this doesn't affect the client
-        req.headers.token = "";  
-        
-        // Return success response
         return res.json({
             status: "success",
-            message: "User logged out successfully"
+            message: "User logged out successfully",
+            token:""
         });
     } catch (err) {
-        // Return failure response
+
         return res.json({
             status: "fail",
             message: err.toString()
@@ -92,9 +97,16 @@ export const ProfileUpdate=async(req,res)=>{
 
 export const CodeVerify=async(req,res)=>{
 
-    let result = await CodeVerifyService(req)
+    let result = await CodeVerifyService(req,res)
     return res.status(200).json(result)
     
+}
+export const IsTokenthere=async(req,res)=>{
+    if(res.cookie('token')!==""){
+        return res.status(200).json({status:"success"})
+    }else{
+        return res.status(401).json({status:"fail"})
+    }
 }
 
 export const ResetPassword=async(req,res)=>{

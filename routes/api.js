@@ -21,6 +21,8 @@ router.get("/logout",UsersController.Logout)
 router.post("/Registration", UsersController.RegisterUser)
 router.get('/recover-verify-email/:email',UsersController.UserOTP)
 router.post("/recover-verify-otp/:email/:otp", UsersController.CodeVerify)
+router.get("/istoken", UsersController.IsTokenthere)
+
 router.get("/ProfileDetails", AuthMiddleware,UsersController.ProfileDetails)
 router.post("/ProfileUpdate", AuthMiddleware,UsersController.ProfileUpdate)
 router.post("/reset-password/:email/:otp" ,UsersController.ResetPassword)

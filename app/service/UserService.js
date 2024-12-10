@@ -1,5 +1,6 @@
 import OTPModel from "../model/otpModel.js";
 import Users from "../model/UsersModel.js";
+import { TokenEncode } from "../utility/tokenUtility.js";
 import ProfileModel from "./../model/profilesModel.js";
 import SendEmail from './../utility/emailUtility.js';
 
@@ -64,23 +65,37 @@ export const ResetPasswordService = async (req) => {
   }
 };
 
-export const CodeVerifyService = async (req) => {
+export const CodeVerifyService = async (req,res) => {
     let email = req.params.email;
     let otp = req.params.otp;
     otp = parseInt(otp)
   try {
     
-    let otpCount = await OTPModel.aggregate([
-        {$match: {email:email,otp:otp}},
-        {$count:"total"}
-    ])
-    
-    if(otpCount[0].total===1){
-        await OTPModel.updateOne({email:email,otp:otp},{otp,status:1})
-        return {status:"success",message:"Verification Successful"}
-    }else{
-        return {status:"fail",message:"Invalid OTP"}
-    }
+    let total=await Users.find({email:email,otp:otp})
+   
+        if(total.length==1){
+
+            // User ID Read
+            let user_id=await Users.find({email:email,otp:otp}).select('_id');
+
+            // User Token Create
+            let token=TokenEncode(email,user_id[0]['_id'].toString())
+            res.cookie('token', token, {
+              httpOnly: true,          // Prevent access to the cookie from JavaScript
+              secure: false, // Use secure cookies in production
+              sameSite: 'None',      // CSRF protection
+              maxAge: 60 * 60 * 1000,   // Cookie expiration time (5 minutes)
+              path: '/',
+            });
+            // OTP Code Update To 0
+            await Users.updateOne({email:email},{$set:{otp:"0"}})
+
+            return {status:"success", message:"Valid OTP",token:token}
+
+        }
+        else{
+            return {status:"fail", message:"Invalid OTP"}
+        }
     
   } catch (e) {
     return { status: "fail", message: e.toString() };
