@@ -1,8 +1,9 @@
-/* eslint-disable no-unused-vars */
+
 import {create} from 'zustand';
 import axios  from "axios";
-import {getEmail, setEmail} from "../utility/utility.js";
+import {getEmail, setEmail, unauthorized} from "../utility/utility.js";
 import Cookies from "js-cookie";
+
 export const UserStore = create((set)=>({
    
     isLogin:!!Cookies.get('token'),
@@ -17,6 +18,45 @@ export const UserStore = create((set)=>({
             }
         }))
     },
+    ProfileForm:{cus_add:"",cus_city:"",cus_country:"",cus_fax:"",cus_name:"",cus_phone:"",cus_postcode:"",cus_state:"",ship_add:"",ship_city:"",ship_country:"",ship_name:"",ship_phone:"",ship_postcode:"",ship_state:""},
+    ProfileFormChange:(name,value)=>{
+        set((state)=>({
+            ProfileForm:{
+                ...state.ProfileForm,
+                [name]:value
+            }
+        }))
+    },
+    ProfileDetails:null,
+    ProfileDetailsRequest:async()=>{
+        try {
+           
+           
+            let res=await axios.get(`http://localhost:8000/api/ProfileDetails`,{
+                headers:{'user_id':"65749b6036b023a8b6c5ea73"}
+            });
+            if(res.data.status=="success"){
+                set({ProfileDetails:res.data['data'][0]})
+                set({ProfileForm:res.data['data'][0]})
+                console.log(res.data)
+            }else{
+                set({ProfileDetails:[]})
+            }
+        }catch (e) {
+            // unauthorized(e.response.status)
+            console.log("unauthorized",e)
+        }
+    },
+    ProfileSaveRequest:async(postBody)=>{
+        try{
+            set({ProfileDetails:null})
+            let res = await axios.post(`/api/UpadateProfile`,postBody)
+            return res.data['status']=== "success"
+        }catch(e){
+            unauthorized(e.response.status)
+        }
+    },
+
     OTPFormData:{otp:""},
     OTPFormOnChange:(name,value)=>{
         set((state)=>({

@@ -13,6 +13,7 @@ import ComplainPage from "./pages/ComplainPage.jsx";
 import ContactPage from "./pages/ContactPage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import OtpPage from "./pages/OtpPage.jsx";
+import ProfilePage from "./pages/ProfilePage.jsx";
 
 
 
@@ -34,6 +35,7 @@ function App() {
              <Route path="/howtobuy" element={<HowToBuyPage/>} />
              <Route path="/complain" element={<ComplainPage/>} />
              <Route path="/contact" element={<ContactPage/>} />
+             <Route path="/profile" element={<ProfilePage/>} />
 
              <Route path="/login" element={<LoginPage/>} />
              <Route path="/otp" element={<OtpPage/>} />

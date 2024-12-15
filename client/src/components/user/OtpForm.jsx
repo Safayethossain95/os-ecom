@@ -16,7 +16,7 @@ const OtpForm = () => {
         }else {
             let res=await VerifyLoginRequest(OTPFormData.otp);
             console.log(res)
-            res?navigate("/"):toast.error("Something Went Wrong!")
+            res?navigate("/profile"):toast.error("Something Went Wrong!")
         }
     }
 
