@@ -5,10 +5,13 @@ import ValidationHelper from "../../utility/ValidationHelper.js";
 import UserSubmitButton from "./UserSubmitButton.jsx";
 import {useNavigate} from "react-router-dom";
 
+
 const OtpForm = () => {
 
     let {OTPFormData,OTPFormOnChange,VerifyLoginRequest}=UserStore();
     let navigate=useNavigate();
+
+   
 
     const onFormSubmit=async ()=>{
         if(ValidationHelper.IsEmpty(OTPFormData.otp)){

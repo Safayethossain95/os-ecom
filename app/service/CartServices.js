@@ -1,19 +1,19 @@
 import mongoose from "mongoose";
-import CartModel from "./../model/cartsModel.js";
+import CartModel from "../model/cartsModel.js";
 export const CreateCartService = async (req) => {
   try {
     let ObjectID = mongoose.Types.ObjectId;
-    const user_id = new ObjectID(req.headers.user_id);
-
-    const { productID, color, qty, size } = req.body;
+    const { productID, color, qty, size,uid } = req.body;
+    const uid2 = new ObjectID(uid);
+    const pid = new ObjectID(productID)
     let postJson = {
-      userID: user_id,
-      productID,
+      userID: uid2,
+      productID:pid,
       color,
       qty,
       size,
     };
-
+    console.log(postJson);
     await CartModel.create(postJson);
     return { status: "success", message: "Cart Saved Successfully" };
   } catch (err) {
@@ -39,23 +39,11 @@ export const UpdateCartService = async (req) => {
 };
 export const ReadCartService = async (req) => {
   try {
-    const ObjectId = mongoose.Types.ObjectId;
-    const user_id =new ObjectId(req.headers.user_id);
-    console.log(user_id.toString());
-    const matchStage = { $match: { userID: user_id } };
-
-    const joinStagewithProduct = {
-      $lookup: {
-        from: "products",
-        localField: "productID",
-        foreignField: "_id",
-        as: "product",
-      },
-    };
-
-    let data = await CartModel.aggregate([matchStage, joinStagewithProduct]);
    
-    if (data.length == 0) {
+
+    let data = await CartModel.find({});
+   
+    if (data.length==0) {
       return { status: "fail", message: "No Items found" };
     }
     return { status: "success", data: data };

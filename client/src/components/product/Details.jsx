@@ -6,9 +6,12 @@ import { productStore } from "../../store/ProductStore";
 import DetailsSkeleton from "../../skeleton/Details-Skeleton";
 import ProductImages from './ProductImages';
 import Reviews from './Reviews';
+import {CartStore} from '../../store/CartStore';
+import toast from 'react-hot-toast';
 
 const Details = ({id}) => {
     const {Details,DetailsRequest,ReviewListRequest} = productStore()
+    const {CartSaveRequest,CartListRequest,CartForm,CartFormChange} = CartStore()
     const [quantity,setQuantity] = useState(1)
     const incrementqty = ()=>{
         setQuantity(q=>q+1)
@@ -18,6 +21,16 @@ const Details = ({id}) => {
             setQuantity(q=>q-1)
 
         }
+    }
+    const handlecart =async ()=>{
+      let res=await CartSaveRequest(Details[0],quantity,CartForm)
+      if(res){
+        toast.success("Added to cart!")
+        await CartListRequest()
+      }else{
+        toast.error("Failed to add to cart!")
+      }
+      
     }
 
     useEffect(()=>{
@@ -41,7 +54,7 @@ const Details = ({id}) => {
               <div className="container mt-2">
                 <div className="row">
                   {
-                      Details?.map((item,key)=>{
+                      Details.slice(0, 1)?.map((item,key)=>{
                           return (
                               <>
                               <div key={key} className="col-md-7 p-3">
@@ -59,10 +72,10 @@ const Details = ({id}) => {
                     <div className="row">
                       <div className="col-4 p-2">
                         <label className="bodySmal">Size</label>
-                        <select className="form-control my-2 form-select">
+                        <select className="form-control my-2 form-select" value={CartForm.size} onChange={(e)=>CartFormChange("size",e.target.value)}>
                         <option value="">Size</option>
                             {
-                                item.details.size.split(",").map((item,i)=>{
+                                item.details?.size.split(",").map((item,i)=>{
                                     return(
                                         <>
                                          <option key={i} value={item}>{item}</option>
@@ -75,10 +88,10 @@ const Details = ({id}) => {
                       </div>
                       <div className="col-4  p-2">
                         <label className="bodySmal">Color</label>
-                        <select className="form-control my-2 form-select">
+                        <select className="form-control my-2 form-select"  value={CartForm.color} onChange={(e)=>CartFormChange("color",e.target.value)}>
                           <option value="">Color</option>
                           {
-                                item.details.color.split(",").map((item,i)=>{
+                                item.details?.color.split(",").map((item,i)=>{
                                     return(
                                         <>
                                          <option key={i} value={item}>{item}</option>
@@ -102,7 +115,7 @@ const Details = ({id}) => {
                         </div>
                       </div>
                       <div className="col-4  p-2">
-                        <button className="btn w-100 btn-success">Add to Cart</button>
+                        <button onClick={handlecart} className="btn w-100 btn-success">Add to Cart</button>
                       </div>
                       <div className="col-4  p-2">
                         <button className="btn w-100 btn-success">Add to Wish</button>

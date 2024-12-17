@@ -6,15 +6,26 @@ import { UserStore } from "../../store/UserStore";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import UserSubmitButton from './../user/UserSubmitButton';
+import { useEffect } from "react";
+import { CartStore } from "../../store/CartStore";
 const AppNavBar = () => {
   const { SearchKeyword, SearchKeywordSet } = productStore();
-  
+  const {CartListRequest,CartCount}= CartStore()
   const navigate = useNavigate()
   const {isLogin,UserLogoutRequest} = UserStore();
 
   
 
-
+  useEffect(() => {
+    
+    (async ()=>{
+      console.log("login",isLogin)
+        if(isLogin){
+            await  CartListRequest();
+            // await  WishListRequest();
+        }
+    })()
+}, []);
   const handlelogout=async()=>{
     sessionStorage.clear();
     localStorage.clear();
@@ -125,7 +136,9 @@ const AppNavBar = () => {
               className="btn ms-2 btn-light position-relative"
             >
               <i className="bi text-dark bi-bag"></i>
-            </Link>
+
+              <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">{CartCount}</span>
+              </Link>
             <Link
               to="/wish"
               type="button"

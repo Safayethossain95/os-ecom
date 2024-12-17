@@ -24,10 +24,10 @@ router.post("/recover-verify-otp/:email/:otp", UsersController.CodeVerify)
 router.get("/istoken", UsersController.IsTokenthere)
 
 router.get("/ProfileDetails",UsersController.ProfileDetails)
-router.post("/ProfileUpdate", AuthMiddleware,UsersController.ProfileUpdate)
+router.post("/ProfileUpdate",UsersController.ProfileUpdate)
 router.post("/reset-password/:email/:otp" ,UsersController.ResetPassword)
 router.post("/CreateProfile", AuthMiddleware,UsersController.CreateProfile)
-router.post("/UpadateProfile", AuthMiddleware,UsersController.UpdateProfile)
+router.post("/UpadateProfile",UsersController.UpdateProfile)
 router.get("/ReadProfile", AuthMiddleware,UsersController.ReadProfile)
 
 // WishList
@@ -46,10 +46,10 @@ router.post("/CreateProductReview",ProductController.CreateProductReview)
 
 
 //Cart 
-router.post("/CreateCart",AuthMiddleware,CartListController.CreateCart)
-router.post("/RemoveCart",AuthMiddleware,CartListController.RemoveCart)
-router.get("/ReadCartList",AuthMiddleware,CartListController.ReadCartList)
-router.post("/UpdateCart",AuthMiddleware,CartListController.UpdateCart)
+router.post("/CreateCart",CartListController.CreateCart)
+router.post("/RemoveCart",CartListController.RemoveCart)
+router.get("/ReadCartList",CartListController.ReadCartList)
+router.post("/UpdateCart",CartListController.UpdateCart)
 
 // Wish
 

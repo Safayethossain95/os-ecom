@@ -89,8 +89,8 @@ export const CodeVerifyService = async (req,res) => {
             });
             // OTP Code Update To 0
             await Users.updateOne({email:email},{$set:{otp:"0"}})
-
-            return {status:"success", message:"Valid OTP",token:token}
+          
+            return {status:"success", message:"Valid OTP",token:token,uid:user_id[0]._id}
 
         }
         else{

@@ -104,6 +104,7 @@ export const CodeVerify=async(req,res)=>{
 }
 export const IsTokenthere=async(req,res)=>{
     if(res.cookie('token')!==""){
+        
         return res.status(200).json({status:"success"})
     }else{
         return res.status(401).json({status:"fail"})

@@ -12,28 +12,28 @@ export const productStore = create((set)=>({
     ListProduct:null,
     ListByBrandRequest:async(BrandID)=>{
         set({ListProduct:null})
-        let res=await axios.get(`/api/ProductListByBrand/${BrandID}`);
+        let res=await axios.get(`http://localhost:8000/api/ProductListByBrand/${BrandID}`);
         if(res.data['status']==="success"){
             set({ListProduct:res.data['data']})
         }
     },
     ListByCategoryRequest:async(CategoryID)=>{
         set({ListProduct:null})
-        let res=await axios.get(`/api/ProductListByCategory/${CategoryID}`);
+        let res=await axios.get(`http://localhost:8000/api/ProductListByCategory/${CategoryID}`);
         if(res.data['status']==="success"){
             set({ListProduct:res.data['data']})
         }
     },
     ListByKeywordRequest:async(Keyword)=>{
         set({ListProduct:null})
-        let res=await axios.get(`/api/ProductListByKeyword/${Keyword}`);
+        let res=await axios.get(`http://localhost:8000/api/ProductListByKeyword/${Keyword}`);
         if(res.data['status']==="success"){
             set({ListProduct:res.data['data']})
         }
     },
     ListByFilterRequest:async(postBody)=>{
         set({ListProduct:null})
-        let res=await axios.post(`/api/ProductListByFilter`,postBody);
+        let res=await axios.post(`http://localhost:8000/api/ProductListByFilter`,postBody);
         
         console.log(res.data);
         if(res.data['status']==="success"){
@@ -43,7 +43,7 @@ export const productStore = create((set)=>({
     BrandList: null,
     BrandListRequest: async ()=>{
         try{
-            const res = await axios.get('/api/ProductBrandList')
+            const res = await axios.get('http://localhost:8000/api/ProductBrandList')
             if(res.data.status=="success"){
                 set({BrandList:res.data['data']})
             }
@@ -54,7 +54,7 @@ export const productStore = create((set)=>({
     SliderList:null,
     SliderListRequest: async()=>{
         try{
-            const res = await axios.get('/api/ProductListBySlider')
+            const res = await axios.get('http://localhost:8000/api/ProductListBySlider')
             console.log("ami slidrer",res.data.data)
             if(res.data.status=="success"){
                 set({SliderList:res.data['data']})
@@ -67,7 +67,7 @@ export const productStore = create((set)=>({
     ListByRemarkRequest: async(remark)=>{
         try{
             console.log("entered remark")
-            const res = await axios.get(`/api/ProductListByRemark/${remark}`)
+            const res = await axios.get(`http://localhost:8000/api/ProductListByRemark/${remark}`)
             if(res.data.status=="success"){
                 console.log(res.data['data'])
                 set({ListByRemark:res.data['data']})
@@ -78,7 +78,7 @@ export const productStore = create((set)=>({
     },
     CategoryList:null,
     CategoryListRequest:async()=>{
-        let res=await axios.get(`/api/GetCategories`);
+        let res=await axios.get(`http://localhost:8000/api/GetCategories`);
         if(res.data['status']==="success"){
             set({CategoryList:res.data['data']})
         }
@@ -88,15 +88,15 @@ export const productStore = create((set)=>({
     DetailsRequest:async(id)=>{
         set({Details:null})
         console.log(id)
-        let res=await axios.get(`/api/ProductDetailsID/${id}`);
+        let res=await axios.get(`http://localhost:8000/api/ProductDetailsID/${id}`);
         if(res.data['status']==="success"){
-            set({Details:res.data['data']})
+            set({Details:res.data['data']}) 
         }
     },
     ReviewList:null,
     ReviewListRequest:async(id)=>{
      
-        let res=await axios.get(`/api/ProductReviewList/${id}`);
+        let res=await axios.get(`http://localhost:8000/api/ProductReviewList/${id}`);
         if(res.data['status']==="success"){
             set({ReviewList:res.data['data']})
         }
