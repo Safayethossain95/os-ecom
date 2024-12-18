@@ -10,6 +10,7 @@ const ProductDetailspage = () => {
     <>
     <Layout>
         <Details id={id}/>
+        
     </Layout>
     </>
   )

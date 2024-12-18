@@ -14,6 +14,7 @@ import ContactPage from "./pages/ContactPage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import OtpPage from "./pages/OtpPage.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
+import CartPage from "./pages/CartPage.jsx";
 
 
 
@@ -36,6 +37,7 @@ function App() {
              <Route path="/complain" element={<ComplainPage/>} />
              <Route path="/contact" element={<ContactPage/>} />
              <Route path="/profile" element={<ProfilePage/>} />
+             <Route path="/cart" element={<CartPage/>} />
 
              <Route path="/login" element={<LoginPage/>} />
              <Route path="/otp" element={<OtpPage/>} />

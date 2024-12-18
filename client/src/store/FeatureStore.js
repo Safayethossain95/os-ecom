@@ -6,7 +6,7 @@ export const useFeatureStore = create((set)=>({
     FeatureListRequest:async()=>{
         try{
 
-            let res=await axios.get(`/api/FeaturesList`);
+            let res=await axios.get(`http://localhost:8000/api/FeaturesList`);
             console.log(res.data)
             if(res.data['status']==="success"){
                 set({FeatureList:res.data['data']})
@@ -19,7 +19,7 @@ export const useFeatureStore = create((set)=>({
     LegalDetails:null,
     LegalDetailsRequest:async(type)=>{
         set({LegalDetails:null})
-        let res=await axios.get(`/api/LegalDetails/${type}`);
+        let res=await axios.get(`http://localhost:8000/api/LegalDetails/${type}`);
         if(res.data['status']==="success"){
             set({LegalDetails:res.data['data']})
         }

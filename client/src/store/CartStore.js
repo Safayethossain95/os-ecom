@@ -2,10 +2,9 @@ import {create} from 'zustand';
 import axios  from "axios";
 import {unauthorized} from "../utility/utility";
 import { UserStore } from './UserStore';
-import { persist } from 'zustand/middleware';
 
-export const CartStore=create(persist((set)=>({
-
+export const CartStore=create((set)=>({
+   
     isCartSubmit:false,
 
     CartForm:{productID:"",color:"",size:""},
@@ -22,11 +21,11 @@ export const CartStore=create(persist((set)=>({
     CartSaveRequest:async(PostBody,qty,cartform)=>{
         try {
             set({isCartSubmit:true})
-            console.log(PostBody)
+            console.log(cartform)
             let color = cartform?.color
-            let size = cartfor?.size
+            let size = cartform?.size
             let productID = PostBody.details?.productID
-            let myuid = UserStore.uid
+            let myuid = UserStore.getState().uid
             let newform = {
                 uid:myuid,
                 productID,
@@ -35,6 +34,7 @@ export const CartStore=create(persist((set)=>({
                 qty
             }
             let res=await axios.post(`http://localhost:8000/api/CreateCart`,newform);
+            console.log(res)
             return res.data['status'] === "success";
         }catch (e) {
             console.log(e)
@@ -55,19 +55,19 @@ export const CartStore=create(persist((set)=>({
     CartListRequest:async()=>{
         try {
             let res=await axios.get(`http://localhost:8000/api/ReadCartList`,{
-                headers:{'user_id':UserStore.uid}
+                headers:{'user_id':UserStore.getState().uid}
             });
-            console.log(res)
-            set({CartList:res.data['data']})
-            set({CartCount:(res.data['data']).length})
+            console.log(UserStore.getState().uid)
+            set({CartList:res.data})
+            set({CartCount:res.data?.length})
             let total=0
             let vat=0
             let payable=0
-            res.data['data'].forEach((item)=>{
-                if(item['product']['discount']===true){
-                    total=total+parseInt(item['qty'])*parseInt(item['product']['discountPrice'])
+            res.data?.forEach((item)=>{
+                if(item['discount']===true){
+                    total=total+parseInt(item['qty'])*parseInt(item['discountPrice'])
                 }else{
-                    total=total+parseInt(item['qty'])*parseInt(item['product']['price'])
+                    total=total+parseInt(item['qty'])*parseInt(item['price'])
                 }
             })
 
@@ -78,20 +78,34 @@ export const CartStore=create(persist((set)=>({
             set({CartPayableTotal:payable})
 
         }catch (e) {
-            console.log(e.response)
+            console.log(e)
         }
     },
 
 
-    RemoveCartListRequest:async(cartID)=>{
+    RemoveCartListRequest: async (cartID) => {
         try {
-            set({CartList:null})
-            await axios.post(`/api/v1/RemoveCartList`,{"_id":cartID});
-        }catch (e) {
-            unauthorized(e.response.status)
+            // Step 1: Remove the item from the backend
+            const res = await axios.delete(`http://localhost:8000/api/RemoveCart/${cartID}`, {
+                headers: { 'user_id': UserStore.getState().uid }
+            }, { withCredentials: true });
+            console.log(UserStore.getState().uid)
+            // Step 2: Check if the response was successful
+            if (res && res.status === 200) {
+                console.log("Item removed from the cart");
+    
+                // Step 3: Update the CartList state by removing the item locally
+                set(prevState => ({
+                    CartList: prevState.CartList.filter(item => item._id !== cartID)
+                }));
+            } else {
+                console.log("No item removed or error in response");
+            }
+        } catch (e) {
+            console.log("Error removing cart item:", e);
         }
     },
-
+    
 
 
 
@@ -139,4 +153,4 @@ export const CartStore=create(persist((set)=>({
     }
 
 
-})))
+}))

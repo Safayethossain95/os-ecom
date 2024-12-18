@@ -4,6 +4,7 @@ import axios  from "axios";
 import {getEmail, setEmail} from "../utility/utility.js";
 import Cookies from "js-cookie";
 import { persist } from 'zustand/middleware';
+import { CartStore } from './CartStore.js';
 
 export const UserStore = create(persist((set,get)=>({
    
@@ -92,6 +93,8 @@ export const UserStore = create(persist((set,get)=>({
 
             let res=await axios.get(`/api/logout`, { withCredentials: true } );
             set({isLogin:!!Cookies.get('token')})
+            CartStore.getState().CartCount=0
+            CartStore.getState().CartList=[]
             return res.data
 
         }catch(e){

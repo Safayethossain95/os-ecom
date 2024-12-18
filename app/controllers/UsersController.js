@@ -77,6 +77,13 @@ export const ProfileDetails=async(req,res)=>{
         let user_id = req.headers['user_id']
        
     let data = await ProfileModel.find({"userID":user_id})
+    res.cookie('userid', user_id, {
+        httpOnly: true,          // Prevent access to the cookie from JavaScript
+        secure: false, // Use secure cookies in production
+        sameSite: 'None',      // CSRF protection
+        maxAge: 60 * 60 * 1000,   // Cookie expiration time (5 minutes)
+        path: '/',
+      });
     return res.json({status:"success",message:"User profile view.",data:data})
     }catch(err){
         return res.json({status:"fail",message:err.toString()})

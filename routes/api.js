@@ -47,7 +47,7 @@ router.post("/CreateProductReview",ProductController.CreateProductReview)
 
 //Cart 
 router.post("/CreateCart",CartListController.CreateCart)
-router.post("/RemoveCart",CartListController.RemoveCart)
+router.delete("/RemoveCart/:id",CartListController.RemoveCart)
 router.get("/ReadCartList",CartListController.ReadCartList)
 router.post("/UpdateCart",CartListController.UpdateCart)
 
