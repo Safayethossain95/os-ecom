@@ -58,24 +58,27 @@ export const CartStore=create((set)=>({
                 headers:{'user_id':UserStore.getState().uid}
             });
             console.log(UserStore.getState().uid)
-            set({CartList:res.data})
-            set({CartCount:res.data?.length})
-            let total=0
-            let vat=0
-            let payable=0
-            res.data?.forEach((item)=>{
-                if(item['discount']===true){
-                    total=total+parseInt(item['qty'])*parseInt(item['discountPrice'])
-                }else{
-                    total=total+parseInt(item['qty'])*parseInt(item['price'])
-                }
-            })
+            if(UserStore.getState().isLogin){
 
-            vat=total*0.05
-            payable=vat+total
-            set({CartTotal:total})
-            set({CartVatTotal:vat})
-            set({CartPayableTotal:payable})
+                set({CartList:res.data})
+                set({CartCount:res.data?.length})
+                let total=0
+                let vat=0
+                let payable=0
+                res.data?.forEach((item)=>{
+                    if(item['discount']===true){
+                        total=total+parseInt(item['qty'])*parseInt(item['discountPrice'])
+                    }else{
+                        total=total+parseInt(item['qty'])*parseInt(item['price'])
+                    }
+                })
+    
+                vat=total*0.05
+                payable=vat+total
+                set({CartTotal:total})
+                set({CartVatTotal:vat})
+                set({CartPayableTotal:payable})
+            }
 
         }catch (e) {
             console.log(e)
